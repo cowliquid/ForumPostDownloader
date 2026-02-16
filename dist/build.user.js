@@ -144,6 +144,10 @@
 // @grant GM_openInTab
 
 // ==/UserScript==
+const debugLog = (...args) => {
+    console.debug("[XENFORO POST DOWNLOADER]", ...args);
+};
+
 const JSZip = window.JSZip;
 const tippy = window.tippy;
 const http = window.GM_xmlhttpRequest;
@@ -879,13 +883,18 @@ const parsers = {
                         return 'Links';
                     })[0];
 
-                    parsed.push({
-                        name,
-                        type: 'single',
-                        enabled: HostConfig[name].enabled,
-                        category: singleCategory,
-                        resources: execMatcher(singleMatcherPattern),
-                    });
+                    try {
+                        parsed.push({
+                            name,
+                            type: 'single',
+                            enabled: HostConfig[name].enabled,
+                            category: singleCategory,
+                            resources: execMatcher(singleMatcherPattern),
+                        });
+                    }
+                    catch (e) {
+                        console.error(`Error parsing host ${name} with pattern ${singleMatcherPattern}:`, e);
+                    }
                 }
 
                 if (albumMatcherPattern) {
@@ -893,13 +902,18 @@ const parsers = {
 
                     albumCategory = `${h.ucFirst(albumCategory)} Albums`;
 
-                    parsed.push({
-                        name,
-                        type: 'album',
-                        enabled: HostConfig[name]?.enabled || false,
-                        category: albumCategory,
-                        resources: execMatcher(albumMatcherPattern),
-                    });
+                    try {
+                        parsed.push({
+                            name,
+                            type: 'album',
+                            enabled: HostConfig[name]?.enabled || false,
+                            category: albumCategory,
+                            resources: execMatcher(albumMatcherPattern),
+                        });
+                    }
+                    catch (e) {
+                        console.error(`Error parsing host ${name} with pattern ${albumMatcherPattern}:`, e);
+                    }
                 }
             }
 
@@ -1595,7 +1609,7 @@ const resolvers = [
 
             const posts = [];
 
-            console.log(`[coomer.st] Resolving profile: ${profileId}`);
+            debugLog(`[coomer.st] Resolving profile: ${profileId}`);
 
             let page = 1;
 
@@ -1618,7 +1632,7 @@ const resolvers = [
                     finalURL = `${host}${nextPage.getAttribute('href')}`;
                 }
 
-                console.log(`[coomer.st] Resolved page: ${page}`);
+                debugLog(`[coomer.st] Resolved page: ${page}`);
 
                 page++;
             } while (nextPage);
@@ -1671,7 +1685,7 @@ const resolvers = [
                     );
                 }
 
-                console.log(`[coomer.st] Resolved post ${index} / ${posts.length}`);
+                debugLog(`[coomer.st] Resolved post ${index} / ${posts.length}`);
 
                 index++;
             }
@@ -4612,13 +4626,13 @@ if (tmp.length) {
                                 });
 
                                 log.post.error(postId, `::DIRECT download failed::: ${url}`, postNumber);
-                                console.log(err);
+                                debugLog(err);
                             },
                             ontimeout: err => {
                                 completed++;
                                 completedBatchedDownloads++;
                                 log.post.error(postId, `::DIRECT download timed out::: ${url}`, postNumber);
-                                console.log(err);
+                                debugLog(err);
                             },
                         });
                     } catch (e) {
@@ -4626,7 +4640,7 @@ if (tmp.length) {
                         completed++;
                         completedBatchedDownloads++;
                         log.post.error(postId, `::DIRECT download error::: ${url}`, postNumber);
-                        console.log(e);
+                        debugLog(e);
                     }
                 };
 
@@ -5011,8 +5025,8 @@ const request = GM_xmlhttpRequest({
                                     try { URL.revokeObjectURL(blobUrl); } catch (e) {}
                                 },
                                 onerror: response => {
-                                    console.log(`Error writing file ${fn} to disk. There may be more details below.`);
-                                    console.log(response);
+                                    debugLog(`Error writing file ${fn} to disk. There may be more details below.`);
+                                    debugLog(response);
                                     try { URL.revokeObjectURL(blobUrl); } catch (e) {}
                                 },
                             });
@@ -5217,8 +5231,8 @@ if (needZipBlob) {
             try {
                 blob = await zip.generateAsync({ type: 'blob' });
             } catch (e) {
-                console.log('JSZip failed to construct the Blob. For very large albums, try unzipped mode.');
-                console.log(e);
+                debugLog('JSZip failed to construct the Blob. For very large albums, try unzipped mode.');
+                debugLog(e);
                 blob = null;
             }
 
@@ -5239,11 +5253,11 @@ if (needZipBlob) {
                                 },
                                 onerror: response => {
                                     try { URL.revokeObjectURL(url); } catch (e) {}
-                                    console.log(`Error writing file to disk. There may be more details below.`);
-                                    console.log(response);
-                                    console.log('Trying to write using FileSaver...');
+                                    debugLog(`Error writing file to disk. There may be more details below.`);
+                                    debugLog(response);
+                                    debugLog('Trying to write using FileSaver...');
                                     try { saveAs(blob, mainZipName); } catch (e) {}
-                                    console.log('Done!');
+                                    debugLog('Done!');
                                     resolve();
                                 },
                             });
@@ -5266,8 +5280,8 @@ if (needZipBlob) {
                                     },
                                     onerror: response => {
                                         try { URL.revokeObjectURL(url); } catch (e) {}
-                                        console.log(`Error writing generated.zip to disk. There may be more details below.`);
-                                        console.log(response);
+                                        debugLog(`Error writing generated.zip to disk. There may be more details below.`);
+                                        debugLog(response);
                                         blob = null;
                                         resolve();
                                     },
