@@ -5220,7 +5220,7 @@ if (needZipBlob) {
             if (postSettings.generateLinks) {
                 log.post.info(postId, `::Generating links::`, postNumber);
                 zip.file(
-                    isFF ? 'generated/links.txt' : 'links.txt',
+                isFF ? 'generated/links.txt' : `${title}-${postNumber}.txt`,
                     resolved
                         .filter(r => r.url)
                         .map(r => r.url)
