@@ -2076,15 +2076,7 @@ const selectedPosts = [];
     init.injectCustomStyles();
 
     h.elements('.message-attribution-opposite').forEach(post => {
-      const settings = {
-        zipped: true,
-        flatten: false,
-        generateLinks: false,
-        generateLog: false,
-        skipDuplicates: false,
-        skipDownload: false,
-        output: [],
-      };
+      const settings = DEFAULT_SETTINGS;
 
       const parsedPost = parsers.thread.parsePost(post);
 
