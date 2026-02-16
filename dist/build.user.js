@@ -1,8 +1,9 @@
 // noinspection SpellCheckingInspection,JSUnresolvedVariable,JSUnresolvedFunction,TypeScriptUMDGlobal,JSUnusedGlobalSymbols
 // ==UserScript==
-// @name XenForoPostDownloader
+// @name XenForoPostDownloader-cowliquid
 // @namespace https://github.com/SkyCloudDev
 // @author SkyCloudDev
+// @author cowliquid
 // @description Downloads images and videos from posts
 // @version 3.15
 // @updateURL https://github.com/SkyCloudDev/ForumPostDownloader/raw/main/dist/build.user.js
