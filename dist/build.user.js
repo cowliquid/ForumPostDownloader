@@ -149,6 +149,51 @@ const http = window.GM_xmlhttpRequest;
 window.isFF = typeof InstallTrigger !== 'undefined';
 window.logs = [];
 
+const MODE = 'links';
+
+const DEFAULT_SETTINGS = {
+    zipped: MODE == 'photos',
+    flatten: false,
+    generateLinks: MODE == 'links',
+    generateLog: false,
+    skipDuplicates: false,
+    skipDownload: MODE == 'links',
+    verifyBunkrLinks: false,
+    output: [],
+}
+
+const HostConfig = {
+  'Simpcity': { enabled: MODE == 'links' },
+  'JPGX': { enabled: MODE == 'photos' || MODE == 'links' },
+  'turbo': { enabled: MODE == 'videos' || MODE == 'links'},
+
+  'Coomer': { enabled: false },
+  'kemono': { enabled: false },
+  'Postimg': { enabled: false },
+  'Ibb': { enabled: false },
+  'Imagevenue': { enabled: false },
+  'Imgvb': { enabled: false },
+  'Imgbox': { enabled: false },
+  'Onlyfans': { enabled: false },
+  'Reddit': { enabled: false },
+  'Pomf2': { enabled: false },
+  'Nitter': { enabled: false },
+  'Twitter': { enabled: false },
+  'Pixhost': { enabled: false },
+  'Imagebam': { enabled: false },
+  'Redgifs': { enabled: false },
+  'Bunkr': { enabled: false },
+  'Give.xxx': { enabled: false },
+  'Pixeldrain': { enabled: MODE == 'links' },
+  'Gofile': { enabled: MODE == 'links' },
+  'Box.com': { enabled: false },
+  'Yandex': { enabled: false },
+  'Cyberfile': { enabled: false },
+  'Pornhub': { enabled: false },
+  'Noodlemagazine': { enabled: false },
+  'Spankbang': { enabled: false },
+};
+
 const log = {
     /**
    * @returns {number}
@@ -836,6 +881,7 @@ const parsers = {
                     parsed.push({
                         name,
                         type: 'single',
+                        enabled: HostConfig[name].enabled,
                         category: singleCategory,
                         resources: execMatcher(singleMatcherPattern),
                     });
@@ -849,6 +895,7 @@ const parsers = {
                     parsed.push({
                         name,
                         type: 'album',
+                        enabled: HostConfig[name]?.enabled || false,
                         category: albumCategory,
                         resources: execMatcher(albumMatcherPattern),
                     });
@@ -858,7 +905,6 @@ const parsers = {
             return parsed
                 .map(p => ({
                 ...p,
-                enabled: true,
                 id: Math.round(Math.random() * Number.MAX_SAFE_INTEGER),
             }))
                 .filter(p => p.resources.length);
@@ -5445,15 +5491,7 @@ const selectedPosts = [];
         init.injectCustomStyles();
 
         h.elements('.message-attribution-opposite').forEach(post => {
-            const settings = {
-                zipped: true,
-                flatten: false,
-                generateLinks: false,
-                generateLog: false,
-                skipDuplicates: false,
-                skipDownload: false,
-                verifyBunkrLinks: false,                output: [],
-            };
+            const settings = DEFAULT_SETTINGS;
 
             const parsedPost = parsers.thread.parsePost(post);
 
