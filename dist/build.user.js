@@ -194,6 +194,7 @@ const HostConfig = {
   'Box.com': { enabled: false },
   'Yandex': { enabled: false },
   'Cyberfile': { enabled: false },
+  'Cyberdrop': { enabled: false },
   'Pornhub': { enabled: false },
   'Noodlemagazine': { enabled: false },
   'Spankbang': { enabled: false },
