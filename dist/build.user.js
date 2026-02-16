@@ -1,13 +1,13 @@
 // noinspection SpellCheckingInspection,JSUnresolvedVariable,JSUnresolvedFunction,TypeScriptUMDGlobal,JSUnusedGlobalSymbols
 // ==UserScript==
 // @name XenForoPostDownloader-cowliquid
-// @namespace https://github.com/SkyCloudDev
+// @namespace https://github.com/cowliquid
 // @author SkyCloudDev
 // @author cowliquid
 // @description Downloads images and videos from posts
 // @version 3.15
-// @updateURL https://github.com/SkyCloudDev/ForumPostDownloader/raw/main/dist/build.user.js
-// @downloadURL https://github.com/SkyCloudDev/ForumPostDownloader/raw/main/dist/build.user.js
+// @updateURL https://github.com/cowliquid/ForumPostDownloader/raw/main/dist/build.user.js
+// @downloadURL https://github.com/cowliquid/ForumPostDownloader/raw/main/dist/build.user.js
 // @icon https://simp4.host.church/simpcityIcon192.png
 // @license WTFPL; http://www.wtfpl.net/txt/copying/
 // @match https://simpcity.cr/threads/*
