@@ -5,7 +5,7 @@
 // @author SkyCloudDev
 // @author cowliquid
 // @description Downloads images and videos from posts
-// @version 3.15
+// @version 3.16
 // @updateURL https://github.com/cowliquid/ForumPostDownloader/raw/main/dist/build.user.js
 // @downloadURL https://github.com/cowliquid/ForumPostDownloader/raw/main/dist/build.user.js
 // @icon https://simp4.host.church/simpcityIcon192.png
